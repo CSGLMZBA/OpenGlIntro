@@ -1,0 +1,2 @@
+add_subdirectory(glfw EXCLUDE_FROM_ALL)
+add_subdirectory(glew/build/cmake EXCLUDE_FROM_ALL)
