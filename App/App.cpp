@@ -25,6 +25,7 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    glfwTerminate();
     return 0;
 }
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
