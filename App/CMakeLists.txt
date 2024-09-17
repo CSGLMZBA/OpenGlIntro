@@ -12,7 +12,7 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE pch.hpp)
 # link needed libraries: target_link_libraries(${PROJECT_NAME} PRIVATE example )
 
 #link libraries from core
-target_link_libraries(${PROJECT_NAME} PRIVATE Core::CoreLib libglew_static glfw)
+target_link_libraries(${PROJECT_NAME} PRIVATE Core::CoreLib Core::glu libglew_static glfw )
 
 #Link assets folder to the build folder for each type so it works on any compiler or IDE
 add_custom_command(
