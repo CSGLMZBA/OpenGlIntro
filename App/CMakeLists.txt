@@ -7,7 +7,7 @@ file(GLOB_RECURSE APP CONFIGURE_DEPENDS *.cpp *h)
 add_executable(${PROJECT_NAME} ${APP})
 
 #precompile headers to aliviate a little the compilation time
-target_precompile_headers(${PROJECT_NAME} PRIVATE pch.h)
+target_precompile_headers(${PROJECT_NAME} PRIVATE pch.hpp)
 
 # link needed libraries: target_link_libraries(${PROJECT_NAME} PRIVATE example )
 
