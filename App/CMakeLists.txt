@@ -3,10 +3,10 @@ project(OpenGlIntro)
 
 #add all files as executables (use of glob is not recommended glob uses all of the files in the current folder glob recurse checks all of the files in the current folder and below configure depends 
 #makes it so it checks for new files every single time adding a step up to compilation time)
-file(GLOB_RECURSE APP CONFIGURE_DEPENDS *.cpp *h)
+file(GLOB_RECURSE APP CONFIGURE_DEPENDS *.cpp *hpp *h)
 add_executable(${PROJECT_NAME} ${APP})
 
-#precompile headers to aliviate a little the compilation time
+#precompile headers to aliviate a little the compiation time
 target_precompile_headers(${PROJECT_NAME} PRIVATE pch.hpp)
 
 # link needed libraries: target_link_libraries(${PROJECT_NAME} PRIVATE example )

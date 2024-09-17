@@ -4,3 +4,6 @@
 [submodule "ThirdParty/glew-cmake"]
 	path = ThirdParty/glew-cmake
 	url = https://github.com/Perlmint/glew-cmake.git
+[submodule "ThirdParty/OpenGlErrorHandler"]
+	path = ThirdParty/OpenGlErrorHandler
+	url = https://gist.github.com/aec637b85e306f671339dcfd509efc82.git
