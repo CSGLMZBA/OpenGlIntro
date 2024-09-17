@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_C_STANDARD 23)
 
 #add all files as library
-file(GLOB_RECURSE LibFiles CONFIGURE_DEPENDS *.cpp *.h)
+file(GLOB_RECURSE LibFiles CONFIGURE_DEPENDS Files/*.hpp Files/*.h Files/*.cpp Files/*.c) 
 add_library(${PROJECT_NAME}
 	${LibFiles}
 )
@@ -22,4 +22,6 @@ target_include_directories(${PROJECT_NAME}
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include>
 	PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}
+		${CMAKE_CURRENT_SOURCE_DIR}/Files
+		${CMAKE_CURRENT_SOURCE_DIR}/Include
 )
