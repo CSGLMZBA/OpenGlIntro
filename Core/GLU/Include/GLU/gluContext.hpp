@@ -1,6 +1,5 @@
-#include <GL/glew.h>
-#include <GLFW\glfw3.h>
-#include "gluSet.hpp"
+#pragma once
+#include <GLU/gluSet.hpp>
 class gluContext
 {
 private:
