@@ -6,3 +6,4 @@
 #include <GLU/gluContext.hpp>
 #include <GLU/EBO.hpp>
 #include <GLU/VBO.hpp>
+#include <GLU/Shader.hpp>
