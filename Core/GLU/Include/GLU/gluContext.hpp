@@ -1,12 +1,18 @@
-#include <GL/glew.h>
-#include <GLFW\glfw3.h>
-#include "gluSet.hpp"
+#pragma once
+#include <GLU/gluSet.hpp>
+#include <iostream>
 class gluContext
 {
 private:
-    /* data */
+    GLFWwindow* mWindow;
 public:
     gluContext();
     gluContext(unsigned int MAJOR, unsigned int MINOR, unsigned int PROFILE);
     ~gluContext();
+public:
+    void AddWindow(GLFWwindow* aWindow);
+    void CreateWindow(int width, int height, const char* title, 
+    GLFWmonitor* monitor, GLFWwindow* share);
+
+    
 };

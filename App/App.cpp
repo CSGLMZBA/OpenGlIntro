@@ -6,16 +6,9 @@ void programErrors(unsigned int program);
 int main()
 {
     //define __APPLE__ on macos devices in case its not working
-    
     gluContext MainContext(4,0,GLFW_OPENGL_CORE_PROFILE);
     GLFWwindow* window = glfwCreateWindow(800, 600, "INTROOPENGL", NULL, NULL);
-    if(window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
+    MainContext.AddWindow(window);
     GLenum err = glewInit();
     if (GLEW_OK != err)
         std::cout << glewGetErrorString(err);
@@ -36,22 +29,11 @@ int main()
     unsigned int indices[] = { // note that we start from 0!
     0, 1, 2
     };
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
+    EBO EBO1(indices,3, GL_STATIC_DRAW);
     
-    unsigned int VBO;
-    glGenBuffers(1,&VBO);
-
-    glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+    VBO VBO1(vertices,12,GL_STATIC_DRAW);
+    VBO VBO2(vertices2,12,GL_STATIC_DRAW);
     
-    unsigned int VBO2;
-    glGenBuffers(1,&VBO2);
-
-    glBindBuffer(GL_ARRAY_BUFFER,VBO2);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices2),vertices2,GL_STATIC_DRAW);
     const char *vertexShaderSource = "#version 400 core\n"
     "layout (location = 0) in vec4 aPos;\n"
     "void main()\n"
@@ -104,8 +86,8 @@ int main()
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    VBO1.Bind();
+    EBO1.Bind();
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float),(void*)0);
     glEnableVertexAttribArray(0);
     glUseProgram(shaderProgram);
@@ -114,8 +96,8 @@ int main()
     unsigned int VAO2;
     glGenVertexArrays(1, &VAO2);
     glBindVertexArray(VAO2);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    VBO2.Bind();
+    EBO1.Bind();
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float),(void*)0);
     glEnableVertexAttribArray(0);
     glUseProgram(shaderProgram2);
@@ -136,8 +118,6 @@ int main()
         glfwPollEvents();
     }
     glDeleteProgram(shaderProgram);
-    
-
     return 0;
 }
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
