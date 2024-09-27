@@ -7,3 +7,4 @@
 #include <GLU/EBO.hpp>
 #include <GLU/VBO.hpp>
 #include <GLU/Shader.hpp>
+#include <GLU/VAO.hpp>

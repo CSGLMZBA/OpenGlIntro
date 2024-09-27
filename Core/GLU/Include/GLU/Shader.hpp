@@ -16,6 +16,7 @@ public:
     ~Shader();
     std::tuple<std::string, std::string> ShadersToStr(const char* vertexPath, const char* fragmentPath);
     void ShaderErrors(unsigned int shader,std::string type);
+    void ProgramErrors(unsigned int program);
     void Use();
 public:
     void SetUniform(const std::string& name, int a);

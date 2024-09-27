@@ -1,6 +1,6 @@
 #include <GLU/EBO.hpp>
 
-EBO::EBO(unsigned int aData[], unsigned int count, GLenum usage):mData(aData)
+EBO::EBO(unsigned int aData[], unsigned int count, unsigned int usage):mData(aData)
 {
     glGenBuffers(1, &mRendererID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mRendererID);

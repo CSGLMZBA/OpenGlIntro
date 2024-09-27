@@ -1,8 +1,13 @@
 #include "pch.hpp"
+#include <windows.h>
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
-void shaderErrors(unsigned int shader,std::string type);
-void programErrors(unsigned int program);
+struct Name
+{
+    double y=0;
+    int w = 0;
+    unsigned char a= 0;
+};
 int main()
 {
     //define __APPLE__ on macos devices in case its not working
@@ -27,34 +32,34 @@ int main()
     0, 1, 2
     };
     EBO EBO1(indices,3, GL_STATIC_DRAW);
-    
     VBO VBO1(vertices,21,GL_STATIC_DRAW);
     Shader program1("Assets/Shaders/Vertex.glsl", "Assets/Shaders/Fragment.glsl");
-    
-
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-    VBO1.Bind();
+    VAO VAO1(2);
+    VAO1.PushAtrrib<float>(4);
+    VAO1.PushAtrrib<float>(3);
+    VAO1.AddBuffer(VBO1);
     EBO1.Bind();
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float),(void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float),(void*)(4*sizeof(float)));
-    glEnableVertexAttribArray(1);
+    VAO1.Unbind();
     program1.Use();
-    glBindVertexArray(VAO);
-    program1.SetUniform(0,0.6f);
-    
+
+    float x = 0.0f, y = 1.0f;
+    program1.SetUniform(0,x,y,0.0f);
     while(!glfwWindowShouldClose(window))
     {
+        x = sin(glfwGetTime()/2);
+        y = tan(x*4);
+    
         processInput(window);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        glBindVertexArray(VAO);
+        VAO1.Bind();
         glDrawElements(GL_TRIANGLES, 3,GL_UNSIGNED_INT,0);
         glfwSwapBuffers(window);
+
+        Sleep(1);
         glfwPollEvents();
+        program1.SetUniform(0,x/2,y,0.0f);
     }
 
     return 0;
@@ -73,29 +78,4 @@ void processInput(GLFWwindow *window)
     else
         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
-}
-
-void shaderErrors(unsigned int shader,std::string type)
-{
-    int success;
-    char infoLog[512];
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
-        glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::"<<type<<"::COMPILATION_FAILED\n" <<
-        infoLog << std::endl;   
-    }
-}
-void programErrors(unsigned int program)
-{
-    int success;
-    char infoLog[512];
-    glGetProgramiv(program, GL_LINK_STATUS,&success);
-    if(!success)
-    {
-        glGetProgramInfoLog(program,512,NULL,infoLog);
-        std::cout << "ERROR::PROGRAM::LINKING_FAILED\n" <<
-        infoLog << std::endl;
-    }
 }

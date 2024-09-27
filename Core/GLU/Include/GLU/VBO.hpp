@@ -4,11 +4,9 @@ class VBO
 {
 private:
     unsigned int mRendererID;
-    const void* mData;
-
 public:
     template <typename P>
-    VBO(P *aData, unsigned int count, GLenum usage) :mData(aData)
+    VBO(P *aData, unsigned int count, unsigned int usage)
     {
         glGenBuffers(1,&mRendererID);
         glBindBuffer(GL_ARRAY_BUFFER,mRendererID);

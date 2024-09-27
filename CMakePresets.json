@@ -53,6 +53,12 @@
             "description": "",
             "displayName": "",
             "configurePreset": "Clang"
+        },
+        {
+            "name": "VS207x64-Release",
+            "displayName": "Visual Studio Community 2022 Release - amd64 - Release",
+            "configurePreset": "VS207x64",
+            "configuration": "Release"
         }
     ]
 }

@@ -17,8 +17,9 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
     glAttachShader(mRendererID,vertexShader);
     glAttachShader(mRendererID, fragmentShader);
     glLinkProgram(mRendererID); 
-    glDeleteShader(vertexShader);
+    ProgramErrors(mRendererID);
     glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
 
 }
 Shader::~Shader() 
@@ -69,6 +70,18 @@ void Shader::ShaderErrors(unsigned int shader,std::string type)
         glGetShaderInfoLog(shader, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::"<<type<<"::COMPILATION_FAILED\n" <<
         infoLog << std::endl;   
+    }
+}
+void Shader::ProgramErrors(unsigned int program)
+{
+    int success;
+    char infoLog[512];
+    glGetProgramiv(program, GL_LINK_STATUS,&success);
+    if(!success)
+    {
+        glGetProgramInfoLog(program,512,NULL,infoLog);
+        std::cout << "ERROR::PROGRAM::LINKING_FAILED\n" <<
+        infoLog << std::endl;
     }
 }
 void Shader::Use() 

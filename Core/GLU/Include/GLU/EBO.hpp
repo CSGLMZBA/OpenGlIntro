@@ -6,7 +6,7 @@ private:
     unsigned int mRendererID;
     unsigned int* mData;
 public:
-    EBO(unsigned int aData[], unsigned int count, GLenum usage);
+    EBO(unsigned int aData[], unsigned int count, unsigned int usage);
     ~EBO();
 public:
     void Bind();
