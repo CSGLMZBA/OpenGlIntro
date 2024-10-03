@@ -1,5 +1,7 @@
 #include "pch.hpp"
 #include <windows.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
@@ -19,48 +21,57 @@ int main()
     glDebugMessageCallback(GLDebugMessageCallback,0);
     //objects and vertex
     float vertices[] = {
-    // positions // colors
-        0.3f, -0.3f, 0.0f,1.0f, 1.0f, 0.0f, 0.0f, // bottom right
-        -0.3f, -0.3f, 0.0f,1.0f, 0.0f, 1.0f, 0.0f, // bottom left
-        0.0f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f // top
+    // positions // colors // texture coords
+    0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
+    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+    -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // top left
     };
 
     unsigned int indices[] = { // note that we start from 0!
-    0, 1, 2
+    0, 1, 3,
+    1, 2, 3
     };
-    EBO EBO1(indices,3, GL_STATIC_DRAW);
-    VBO VBO1(vertices,21,GL_STATIC_DRAW);
-    Shader program1("Assets/Shaders/Vertex.glsl", "Assets/Shaders/Fragment.glsl");
-    VertexLayout VL1(2);
-    VL1.PushAtrrib<float>(4);
+    EBO EBO1(indices,6, GL_STATIC_DRAW);
+    VBO VBO1(vertices,sizeof(vertices)/sizeof(float),GL_STATIC_DRAW);
+    Shader program1("Assets/Shaders/TexVertex.glsl", "Assets/Shaders/TexFragment.glsl");
+    VertexLayout VL1(3);
     VL1.PushAtrrib<float>(3);
+    VL1.PushAtrrib<float>(3);
+    VL1.PushAtrrib<float>(2);
     VAO VAO1(VBO1,VL1);
     EBO1.Bind();
     VAO1.Unbind();
     program1.Use();
-
-    float x = 0.0f, y = 1.0f;
-    program1.SetUniform(0,x,y,0.0f);
     
-    //int width, height, nrChannels;  
-    //unsigned char *data = stbi_load("Assets/Textures/container.jpg", &width, &height,
-    //&nrChannels, 0);
+    int width, height, nrChannels;  
+    unsigned char *data = stbi_load("Assets/Textures/container.jpg", &width, &height,
+    &nrChannels, 0);
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+    GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    stbi_image_free(data);
+
     while(!glfwWindowShouldClose(window))
     {
-        x = sin(glfwGetTime()/4);
-        y = tan(x*8);
     
         processInput(window);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
         VAO1.Bind();
-        glDrawElements(GL_TRIANGLES, 3,GL_UNSIGNED_INT,0);
+        glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
         glfwSwapBuffers(window);
 
         Sleep(1);
         glfwPollEvents();
-        program1.SetUniform(0,x*0.7,y*0.7,0.0f);
     }
 
     return 0;

@@ -9,5 +9,3 @@
 #include <GLU/VBO.hpp>
 #include <GLU/Shader.hpp>
 #include <GLU/VAO.hpp>
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>

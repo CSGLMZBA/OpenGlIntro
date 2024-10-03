@@ -12,6 +12,12 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER,mRendererID);
         glBufferData(GL_ARRAY_BUFFER,sizeof(P)*count,aData,usage);
     }
+    VBO(void *aData, unsigned int size, unsigned int usage)
+    {
+        glGenBuffers(1,&mRendererID);
+        glBindBuffer(GL_ARRAY_BUFFER,mRendererID);
+        glBufferData(GL_ARRAY_BUFFER,size,aData,usage);
+    }
     ~VBO();
 public: 
     void Bind();
