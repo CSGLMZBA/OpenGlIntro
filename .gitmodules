@@ -7,3 +7,6 @@
 [submodule "ThirdParty/OpenGlErrorHandler"]
 	path = ThirdParty/OpenGlErrorHandler
 	url = https://gist.github.com/aec637b85e306f671339dcfd509efc82.git
+[submodule "ThirdParty/stb-Cmake"]
+	path = ThirdParty/stb-Cmake
+	url = https://github.com/CSGLMZBA/stb-Cmake.git
