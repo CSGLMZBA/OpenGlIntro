@@ -2,17 +2,13 @@
 #include <windows.h>
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
-struct Name
-{
-    double y=0;
-    int w = 0;
-    unsigned char a= 0;
-};
+
 int main()
 {
     //define __APPLE__ on macos devices in case its not working
     gluContext MainContext(4,3,GLFW_OPENGL_CORE_PROFILE);
     GLFWwindow* window = glfwCreateWindow(800, 600, "INTROOPENGL", NULL, NULL);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     MainContext.AddWindow(window);
     GLenum err = glewInit();
     if (GLEW_OK != err)
@@ -20,12 +16,13 @@ int main()
     glViewport(0, 0, 800, 600);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSwapInterval(1);
+    glDebugMessageCallback(GLDebugMessageCallback,0);
     //objects and vertex
     float vertices[] = {
     // positions // colors
-        0.5f, -0.5f, 0.0f,1.0f, 1.0f, 0.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f,1.0f, 0.0f, 1.0f, 0.0f, // bottom left
-        0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f // top
+        0.3f, -0.3f, 0.0f,1.0f, 1.0f, 0.0f, 0.0f, // bottom right
+        -0.3f, -0.3f, 0.0f,1.0f, 0.0f, 1.0f, 0.0f, // bottom left
+        0.0f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f // top
     };
 
     unsigned int indices[] = { // note that we start from 0!
@@ -34,10 +31,10 @@ int main()
     EBO EBO1(indices,3, GL_STATIC_DRAW);
     VBO VBO1(vertices,21,GL_STATIC_DRAW);
     Shader program1("Assets/Shaders/Vertex.glsl", "Assets/Shaders/Fragment.glsl");
-    VAO VAO1(2);
-    VAO1.PushAtrrib<float>(4);
-    VAO1.PushAtrrib<float>(3);
-    VAO1.AddBuffer(VBO1);
+    VertexLayout VL1(2);
+    VL1.PushAtrrib<float>(4);
+    VL1.PushAtrrib<float>(3);
+    VAO VAO1(VBO1,VL1);
     EBO1.Bind();
     VAO1.Unbind();
     program1.Use();
@@ -46,8 +43,8 @@ int main()
     program1.SetUniform(0,x,y,0.0f);
     while(!glfwWindowShouldClose(window))
     {
-        x = sin(glfwGetTime()/2);
-        y = tan(x*4);
+        x = sin(glfwGetTime()/4);
+        y = tan(x*8);
     
         processInput(window);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -59,7 +56,7 @@ int main()
 
         Sleep(1);
         glfwPollEvents();
-        program1.SetUniform(0,x/2,y,0.0f);
+        program1.SetUniform(0,x*0.7,y*0.7,0.0f);
     }
 
     return 0;

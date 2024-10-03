@@ -3,12 +3,18 @@
 gluContext::gluContext()
 {
     glfwInit();
+    #ifdef _DEBUG
+        glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+    #endif
 }
 
 gluContext::gluContext(unsigned int MAJOR, unsigned int MINOR, unsigned int PROFILE)
 {
     glfwInit();
     gluSet(MAJOR,MINOR,PROFILE);
+    #ifdef _DEBUG
+        glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+    #endif
 }
 
 void gluContext::AddWindow(GLFWwindow *aWindow) 

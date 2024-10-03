@@ -1,2 +1,3 @@
 add_subdirectory(glfw EXCLUDE_FROM_ALL)
 add_subdirectory(glew-cmake EXCLUDE_FROM_ALL)
+include_directories(OpenGlErrorHandler)
