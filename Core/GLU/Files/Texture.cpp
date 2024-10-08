@@ -9,8 +9,7 @@ namespace glu {
     {
         int width, height, nrChannels;  
         stbi_set_flip_vertically_on_load(true);
-        unsigned char *data = stbi_load(aPath, &width, &height,
-        &nrChannels, 0);
+        unsigned char *data = stbi_load(aPath, &width, &height, &nrChannels, 0);
         if (!data)
         {   
             std::cout << aPath << " could not be read" << std::endl;
