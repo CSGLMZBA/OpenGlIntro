@@ -41,6 +41,13 @@ int main()
     VAO1.Unbind();
     program1.Use();
     glu::Texture Tex1("Assets/Textures/container.jpg");
+    glu::Texture Tex2("Assets/Textures/awesomeface.png", GL_RGBA);
+    glActiveTexture(GL_TEXTURE0);
+    Tex2.Bind();
+    glActiveTexture(GL_TEXTURE1);
+    Tex1.Bind();
+    program1.SetUniform("texture1", 0);
+    program1.SetUniform("texture2", 1);
     while(!glfwWindowShouldClose(window))
     {
     
@@ -55,7 +62,6 @@ int main()
         Sleep(1);
         glfwPollEvents();
     }
-
     return 0;
 }
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

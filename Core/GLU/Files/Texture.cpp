@@ -1,21 +1,28 @@
 
 #include "GLU/Texture.hpp"
+#include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 namespace glu {
 
-    Texture::Texture(const char* aPath) 
+    Texture::Texture(const char* aPath, GLenum aFormat) 
     {
         int width, height, nrChannels;  
+        stbi_set_flip_vertically_on_load(true);
         unsigned char *data = stbi_load(aPath, &width, &height,
         &nrChannels, 0);
+        if (!data)
+        {   
+            std::cout << aPath << " could not be read" << std::endl;
+            return;
+        }
         glGenTextures(1, &mRendererID);
         glBindTexture(GL_TEXTURE_2D, mRendererID);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, aFormat,
         GL_UNSIGNED_BYTE, data);
         stbi_image_free(data);
         glGenerateMipmap(GL_TEXTURE_2D);
