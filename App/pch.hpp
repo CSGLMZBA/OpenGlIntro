@@ -9,3 +9,4 @@
 #include <GLU/VertexBuffer.hpp>
 #include <GLU/Shader.hpp>
 #include <GLU/VertexArray.hpp>
+#include <GLU/Texture.hpp>

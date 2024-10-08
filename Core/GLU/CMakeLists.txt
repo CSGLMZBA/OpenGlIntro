@@ -12,7 +12,7 @@ add_library(${PROJECT_NAME}
 add_library(Core::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 #link needed libraries 
-target_link_libraries(${PROJECT_NAME} PRIVATE libglew_static glfw)
+target_link_libraries(${PROJECT_NAME} PRIVATE libglew_static glfw stb)
 
 #set include directories (what relative path will be used with the #include instruction)
 target_include_directories(${PROJECT_NAME}
