@@ -28,13 +28,13 @@ int main()
     unsigned int indices[] = { // note that we start from 0!
     0, 1, 2
     };
-    EBO EBO1(indices,3, GL_STATIC_DRAW);
-    VBO VBO1(vertices,21,GL_STATIC_DRAW);
+    ElementBuffer EBO1(indices,3, GL_STATIC_DRAW);
+    VertexBuffer VBO1(vertices,21,GL_STATIC_DRAW);
     Shader program1("Assets/Shaders/Vertex.glsl", "Assets/Shaders/Fragment.glsl");
     VertexLayout VL1(2);
     VL1.PushAtrrib<float>(4);
     VL1.PushAtrrib<float>(3);
-    VAO VAO1(VBO1,VL1);
+    VertexArray VAO1(VBO1,VL1);
     EBO1.Bind();
     VAO1.Unbind();
     program1.Use();

@@ -1,5 +1,5 @@
 #include <GLU/gluSet.hpp>
-
+namespace glu{
 void gluSet(unsigned int MAJOR, unsigned int MINOR, unsigned int PROFILE)
 {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, MAJOR);
@@ -14,4 +14,5 @@ void gluSet()
     #ifdef __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
+}
 }

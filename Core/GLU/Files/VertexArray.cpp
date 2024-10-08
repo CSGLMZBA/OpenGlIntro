@@ -1,30 +1,31 @@
-#include <GLU/VAO.hpp>
+#include <GLU/VertexArray.hpp>
 
-VAO::VAO(){
+namespace glu{
+VertexArray::VertexArray(){
     glGenVertexArrays(1, &mRendererID);
     glBindVertexArray(mRendererID);
 }
-VAO::VAO(VBO& aVertexBuffer) {
+VertexArray::VertexArray(VertexBuffer& aVertexBuffer) {
     glGenVertexArrays(1, &mRendererID);
     glBindVertexArray(mRendererID);
     AddBuffer(aVertexBuffer);
 }
 
-VAO::VAO(VBO& aVertexBuffer,VertexLayout& VL) {
+VertexArray::VertexArray(VertexBuffer& aVertexBuffer,VertexLayout& VL) {
     glGenVertexArrays(1, &mRendererID);
     glBindVertexArray(mRendererID);
     AddBuffer(aVertexBuffer);
     AddLayout(VL);
 }
 
-VAO::~VAO() {
+VertexArray::~VertexArray() {
 }
 
-void VAO::AddBuffer(VBO& aVertexBuffer) {
+void VertexArray::AddBuffer(VertexBuffer& aVertexBuffer) {
     aVertexBuffer.Bind();
 }
 
-void VAO::AddLayout(VertexLayout& VL) 
+void VertexArray::AddLayout(VertexLayout& VL) 
 {
     for(int i = 0; i < VL.getAttribs().size(); i++)
     {
@@ -32,14 +33,14 @@ void VAO::AddLayout(VertexLayout& VL)
         glEnableVertexAttribArray(i);
     }
 }
-void VAO::Bind() 
+void VertexArray::Bind() 
 {
     glBindVertexArray(mRendererID);
 }
 
-void VAO::Unbind() 
+void VertexArray::Unbind() 
 {
     glBindVertexArray(0);
 }
 
-
+}

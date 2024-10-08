@@ -1,5 +1,5 @@
 #include <GLU/shader.hpp>
-
+namespace glu{
 Shader::Shader(const char *vertexPath, const char *fragmentPath) 
 {
     auto [vShaderSourceS,fShaderSourceS] = ShadersToStr(vertexPath, fragmentPath);
@@ -243,4 +243,5 @@ void Shader::SetUniform(unsigned int location, bool a1, bool a2, bool a3) {
 
 void Shader::SetUniform(unsigned int location, bool a1, bool a2, bool a3, bool a4) {
     glUniform4i(location, (int)a1,(int)a2,(int)a3,(int)a4);
+}
 }

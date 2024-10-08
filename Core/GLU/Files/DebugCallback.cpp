@@ -43,6 +43,7 @@
 // original gist: https://gist.github.com/liam-middlebrook/c52b069e4be2d87a6d2f
 
 #include <GLU/DebugCallback.hpp>
+namespace glu{
 // Callback function for printing debug statements
 void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length,
@@ -146,7 +147,8 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
         std::cout << "OpenGL error ["<< id <<"]: "<< _type <<
         " of "<< _severity <<"severity, raised from " << _source << ": " << msg <<std::endl;
 #ifdef _DEBUG
-        //__debugbreak();
+        __debugbreak();
 #endif
     }
+}
 }

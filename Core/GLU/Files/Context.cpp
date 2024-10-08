@@ -1,6 +1,6 @@
-#include "GLU/gluContext.hpp"
-
-gluContext::gluContext()
+#include "GLU/Context.hpp"
+namespace glu{
+Context::Context()
 {
     glfwInit();
     #ifdef _DEBUG
@@ -8,7 +8,7 @@ gluContext::gluContext()
     #endif
 }
 
-gluContext::gluContext(unsigned int MAJOR, unsigned int MINOR, unsigned int PROFILE)
+Context::Context(unsigned int MAJOR, unsigned int MINOR, unsigned int PROFILE)
 {
     glfwInit();
     gluSet(MAJOR,MINOR,PROFILE);
@@ -17,7 +17,7 @@ gluContext::gluContext(unsigned int MAJOR, unsigned int MINOR, unsigned int PROF
     #endif
 }
 
-void gluContext::AddWindow(GLFWwindow *aWindow) 
+void Context::AddWindow(GLFWwindow *aWindow) 
 {
     
     if(aWindow == NULL)
@@ -30,7 +30,7 @@ void gluContext::AddWindow(GLFWwindow *aWindow)
         glfwMakeContextCurrent(mWindow);
     }
 }
-void gluContext::CreateWindow(int width, int height, const char *title,
+void Context::CreateWindow(int width, int height, const char *title,
                                 GLFWmonitor *monitor, GLFWwindow *share) 
 {
     mWindow =glfwCreateWindow(width, height, title, monitor, share);
@@ -41,7 +41,8 @@ void gluContext::CreateWindow(int width, int height, const char *title,
     else
         glfwMakeContextCurrent(mWindow);
 }
-gluContext::~gluContext()
+Context::~Context()
 {
     glfwTerminate();
+}
 }

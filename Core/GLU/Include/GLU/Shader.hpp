@@ -6,6 +6,7 @@
 #include <iostream>
 #include <tuple>
 #include <unordered_map>
+namespace glu{
 class Shader
 {
 private:
@@ -46,4 +47,4 @@ public:
     void SetUniform(unsigned int location, bool a1, bool a2, bool a3);
     void SetUniform(unsigned int location, bool a1, bool a2, bool a3, bool a4);
 };
-
+}

@@ -3,9 +3,9 @@
 #include <string>
 #include <GL/glew.h>
 #include <GLFW\glfw3.h>
-#include <GLU/gluContext.hpp>
+#include <GLU/Context.hpp>
 #include <GLU/DebugCallback.hpp>
-#include <GLU/EBO.hpp>
-#include <GLU/VBO.hpp>
+#include <GLU/ElementBuffer.hpp>
+#include <GLU/VertexBuffer.hpp>
 #include <GLU/Shader.hpp>
-#include <GLU/VAO.hpp>
+#include <GLU/VertexArray.hpp>

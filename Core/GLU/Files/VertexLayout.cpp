@@ -1,4 +1,5 @@
 #include <GLU/VertexLayout.hpp>
+namespace glu{
 VertexLayout::VertexLayout(unsigned int aNumberOfAttributes, 
 unsigned int aStride,unsigned int aOffset):
 mAttributeCount(aNumberOfAttributes),mStride(aStride), mOffset(aOffset),mSetStride(aStride)
@@ -24,4 +25,5 @@ void VertexLayout::PushAtrrib<int>(unsigned int count, bool aNormalized)
         mOffset+=count*sizeof(int);
         if(!mSetStride)
             mStride = mOffset;
+}
 }

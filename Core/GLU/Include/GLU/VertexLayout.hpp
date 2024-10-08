@@ -1,6 +1,7 @@
 #pragma once
-#include <GLU/gluContext.hpp>
+#include <GLU/gluSet.hpp>
 #include <vector>
+namespace glu{
 struct Attribute
 {
     unsigned int count;
@@ -26,3 +27,4 @@ public:
     template <typename T>
     void PushAtrrib(unsigned int count, bool aNormalized = 0);
 };
+}

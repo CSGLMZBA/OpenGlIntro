@@ -4,21 +4,19 @@
 #include <stb/stb_image.h>
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
-
 int main()
 {
     //define __APPLE__ on macos devices in case its not working
-    gluContext MainContext(4,3,GLFW_OPENGL_CORE_PROFILE);
+    glu::Context MainContext(4,3,GLFW_OPENGL_CORE_PROFILE);
     GLFWwindow* window = glfwCreateWindow(800, 600, "INTROOPENGL", NULL, NULL);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     MainContext.AddWindow(window);
     GLenum err = glewInit();
     if (GLEW_OK != err)
         std::cout << glewGetErrorString(err);
     glViewport(0, 0, 800, 600);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    MainContext.EnableDebugCallbacks();
     glfwSwapInterval(1);
-    glDebugMessageCallback(GLDebugMessageCallback,0);
     //objects and vertex
     float vertices[] = {
     // positions // colors // texture coords
@@ -32,14 +30,14 @@ int main()
     0, 1, 3,
     1, 2, 3
     };
-    EBO EBO1(indices,6, GL_STATIC_DRAW);
-    VBO VBO1(vertices,sizeof(vertices)/sizeof(float),GL_STATIC_DRAW);
-    Shader program1("Assets/Shaders/TexVertex.glsl", "Assets/Shaders/TexFragment.glsl");
-    VertexLayout VL1(3);
+    glu::ElementBuffer EBO1(indices,6, GL_STATIC_DRAW);
+    glu::VertexBuffer VBO1(vertices,sizeof(vertices)/sizeof(float),GL_STATIC_DRAW);
+    glu::Shader program1("Assets/Shaders/TexVertex.glsl", "Assets/Shaders/TexFragment.glsl");
+    glu::VertexLayout VL1(3);
     VL1.PushAtrrib<float>(3);
     VL1.PushAtrrib<float>(3);
     VL1.PushAtrrib<float>(2);
-    VAO VAO1(VBO1,VL1);
+    glu::VertexArray VAO1(VBO1,VL1);
     EBO1.Bind();
     VAO1.Unbind();
     program1.Use();
@@ -58,7 +56,8 @@ int main()
     GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(data);
-
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, texture);
     while(!glfwWindowShouldClose(window))
     {
     
