@@ -7,7 +7,9 @@ ElementBuffer::ElementBuffer(unsigned int aData[], unsigned int count, unsigned 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int)*count,aData,usage);
 }
 
-ElementBuffer::~ElementBuffer() {}
+ElementBuffer::~ElementBuffer() 
+{
+}
 void ElementBuffer::Bind() 
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mRendererID);

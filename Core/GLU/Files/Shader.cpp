@@ -91,7 +91,7 @@ void Shader::Use()
 
 void Shader::SetUniform(const std::string& name, int a) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -100,7 +100,7 @@ void Shader::SetUniform(const std::string& name, int a)
 
 void Shader::SetUniform(const std::string& name, int a1, int a2) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -109,7 +109,7 @@ void Shader::SetUniform(const std::string& name, int a1, int a2)
 
 void Shader::SetUniform(const std::string& name, int a1, int a2, int a3) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -118,7 +118,7 @@ void Shader::SetUniform(const std::string& name, int a1, int a2, int a3)
 
 void Shader::SetUniform(const std::string& name, int a1, int a2, int a3, int a4) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -143,7 +143,7 @@ void Shader::SetUniform(unsigned int location, int a1, int a2, int a3, int a4) {
 
 void Shader::SetUniform(const std::string& name, float a) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -152,7 +152,7 @@ void Shader::SetUniform(const std::string& name, float a)
 
 void Shader::SetUniform(const std::string& name, float a1, float a2) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -161,7 +161,7 @@ void Shader::SetUniform(const std::string& name, float a1, float a2)
 
 void Shader::SetUniform(const std::string& name, float a1, float a2, float a3) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -170,7 +170,7 @@ void Shader::SetUniform(const std::string& name, float a1, float a2, float a3)
 
 void Shader::SetUniform(const std::string& name, float a1, float a2, float a3, float a4) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -195,7 +195,7 @@ void Shader::SetUniform(unsigned int location, float a1, float a2, float a3, flo
 
 void Shader::SetUniform(const std::string& name, bool a) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -204,7 +204,7 @@ void Shader::SetUniform(const std::string& name, bool a)
 
 void Shader::SetUniform(const std::string& name, bool a1, bool a2) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -213,7 +213,7 @@ void Shader::SetUniform(const std::string& name, bool a1, bool a2)
 
 void Shader::SetUniform(const std::string& name, bool a1, bool a2, bool a3) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }
@@ -222,7 +222,7 @@ void Shader::SetUniform(const std::string& name, bool a1, bool a2, bool a3)
 
 void Shader::SetUniform(const std::string& name, bool a1, bool a2, bool a3, bool a4) 
 {
-    if (mUniforms.find(name) != mUniforms.end())
+    if (mUniforms.find(name) == mUniforms.end())
     {
         mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
     }

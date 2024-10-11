@@ -3,6 +3,7 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+float mix(float addVal);
 int main()
 {
     //define __APPLE__ on macos devices in case its not working
@@ -40,18 +41,16 @@ int main()
     EBO1.Bind();
     VAO1.Unbind();
     program1.Use();
-    glu::Texture Tex1("Assets/Textures/container.jpg");
-    glu::Texture Tex2("Assets/Textures/awesomeface.png", GL_RGBA);
-    glActiveTexture(GL_TEXTURE0);
-    Tex2.Bind();
-    glActiveTexture(GL_TEXTURE1);
-    Tex1.Bind();
+    glu::Texture Tex3("Assets/Textures/container.jpg",1);
+    glu::Texture Tex2("Assets/Textures/awesomeface.png", 0, GL_RGBA);
     program1.SetUniform("texture1", 0);
     program1.SetUniform("texture2", 1);
+    program1.SetUniform("texture3", mix(0));
     while(!glfwWindowShouldClose(window))
     {
     
         processInput(window);
+        program1.SetUniform(2, mix(0));
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
@@ -73,9 +72,19 @@ void processInput(GLFWwindow *window)
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        mix(-0.01);
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        mix(0.01);
     if(glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     else
         glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
+}
+float mix(float addVal)
+{
+    static float Val = 0.5f;
+    Val+=addVal;
+    return Val;
 }
