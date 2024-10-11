@@ -1,20 +1,18 @@
 #pragma once
 #include <GLU/gluSet.hpp>
-#include <string>
 namespace glu
 {
     class Texture
     {
-    private:
+    protected:
         unsigned int mRendererID,mTextureSlot;
         GLenum mTextureType;
     public:
-        Texture(const char* aPath, unsigned int aTextureSlot = 0, GLenum aFormat = GL_RGB,  GLenum aTextureType = GL_TEXTURE_2D);
-        ~Texture();
-        void Bind();
-        void Unbind();
+        Texture(unsigned int aTextureSlot, GLenum aTextureType):mTextureSlot(aTextureSlot),mTextureType(aTextureType){}
+        virtual ~Texture() {}
+        virtual void Bind() {};
+        virtual void Unbind() {};
     public:
-        template <typename T>
-            void SetParameter(GLenum parameterName, T parameterValue);
+            virtual void SetParameter() {};
     };
 }

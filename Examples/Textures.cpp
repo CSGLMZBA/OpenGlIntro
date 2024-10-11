@@ -6,11 +6,6 @@ void processInput(GLFWwindow *window);
 float mix(float addVal);
 int main()
 {
-    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-    vec = trans * vec;
-    std::cout << vec.x << vec.y << vec.z << std::endl;
     //define __APPLE__ on macos devices in case its not working
     glu::Context MainContext(4,3,GLFW_OPENGL_CORE_PROFILE);
     GLFWwindow* window = glfwCreateWindow(800, 600, "INTROOPENGL", NULL, NULL);
@@ -46,8 +41,8 @@ int main()
     EBO1.Bind();
     VAO1.Unbind();
     program1.Use();
-    glu::Texture2D Tex3("Assets/Textures/container.jpg",1);
-    glu::Texture2D Tex2("Assets/Textures/awesomeface.png", 0, GL_RGBA);
+    glu::Texture Tex3("Assets/Textures/container.jpg",1);
+    glu::Texture Tex2("Assets/Textures/awesomeface.png", 0, GL_RGBA);
     program1.SetUniform("texture1", 0);
     program1.SetUniform("texture2", 1);
     program1.SetUniform("texture3", mix(0));

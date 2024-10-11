@@ -9,4 +9,7 @@
 #include <GLU/VertexBuffer.hpp>
 #include <GLU/Shader.hpp>
 #include <GLU/VertexArray.hpp>
-#include <GLU/Texture.hpp>
+#include <GLU/Texture2D.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>

@@ -1,11 +1,11 @@
 
-#include "GLU/Texture.hpp"
+#include "GLU/Texture2D.hpp"
 #include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 namespace glu {
 
-    Texture::Texture(const char* aPath, unsigned int aTextureSlot, GLenum aFormat, GLenum aTextureType):mTextureSlot(aTextureSlot),mTextureType(aTextureType)
+    Texture2D::Texture2D(const char* aPath, unsigned int aTextureSlot, GLenum aFormat, GLenum aTextureType):Texture(aTextureSlot,aTextureType)
     {
         int width, height, nrChannels;  
         stbi_set_flip_vertically_on_load(true);
@@ -28,32 +28,32 @@ namespace glu {
         glGenerateMipmap(aTextureType);
     }
 
-    Texture::~Texture() {
+    Texture2D::~Texture2D() {
         
     }
-    void Texture::Bind()
+    void Texture2D::Bind()
     {
         glActiveTexture(GL_TEXTURE0 + mTextureSlot);
         glBindTexture(mTextureType, mRendererID);
     }
-    void Texture::Unbind()
+    void Texture2D::Unbind()
     {
         glActiveTexture(GL_TEXTURE0 + mTextureSlot);
         glBindTexture(mTextureType, 0);
     }
     template <typename T>
-        void Texture::SetParameter(GLenum parameterName, T parameterValue)
+        void Texture2D::SetParameter(GLenum parameterName, T parameterValue)
         {
 
         }
     template <>
-        void Texture::SetParameter<float>(GLenum parameterName, GLfloat parameterValue)
+        void Texture2D::SetParameter<float>(GLenum parameterName, GLfloat parameterValue)
         {
 
             glTextureParameteri(mRendererID, parameterName, parameterValue);
         }
     template <>
-        void Texture::SetParameter<int>(GLenum parameterName, GLint parameterValue)
+        void Texture2D::SetParameter<int>(GLenum parameterName, GLint parameterValue)
         {
 
             glTextureParameteri(mRendererID, parameterName, parameterValue);
