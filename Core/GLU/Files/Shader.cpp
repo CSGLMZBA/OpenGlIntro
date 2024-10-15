@@ -244,4 +244,17 @@ void Shader::SetUniform(unsigned int location, bool a1, bool a2, bool a3) {
 void Shader::SetUniform(unsigned int location, bool a1, bool a2, bool a3, bool a4) {
     glUniform4i(location, (int)a1,(int)a2,(int)a3,(int)a4);
 }
+void Shader::SetUniform(const std::string& name, glm::mat4& Matrix, bool Transpose)
+{
+    if (mUniforms.find(name) == mUniforms.end())
+    {
+        mUniforms[name] = glGetUniformLocation(mRendererID, name.c_str());
+    }
+        glUniformMatrix4fv(mUniforms[name], 1, Transpose, glm::value_ptr(Matrix));
+
+}
+void Shader::SetUniform(unsigned int location, glm::mat4& Matrix, bool Transpose)
+{
+    glUniformMatrix4fv(location, 1, Transpose, glm::value_ptr(Matrix));
+}
 }

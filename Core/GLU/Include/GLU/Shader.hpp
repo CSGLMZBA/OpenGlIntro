@@ -46,5 +46,8 @@ public:
     void SetUniform(unsigned int location, bool a1, bool a2);
     void SetUniform(unsigned int location, bool a1, bool a2, bool a3);
     void SetUniform(unsigned int location, bool a1, bool a2, bool a3, bool a4);
+
+    void SetUniform(const std::string& name, glm::mat4& Matrix,bool Transpose = false);
+    void SetUniform(unsigned int location, glm::mat4& Matrix,bool Transpose = false);
 };
 }
