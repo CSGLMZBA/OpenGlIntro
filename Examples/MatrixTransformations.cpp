@@ -69,8 +69,8 @@ int main()
         trans = glm::mat4(1.0f);
         trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
         trans = glm::rotate(trans, glm::radians((float)glfwGetTime()), glm::vec3(0.0, 0.0, 1.0));
-        //trans2 = glm::mat4(1.0f);
-        //trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
+        trans2 = glm::mat4(1.0f);
+        trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
         scale = (sin(glfwGetTime())+2);
         trans2 = glm::scale(trans2,glm::vec3(scale,scale,1.0f));
         glfwPollEvents();
