@@ -51,6 +51,13 @@ int main()
     trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
     float scale = sin(glfwGetTime())/2 +0.5;
     trans2 = glm::scale(trans2,glm::vec3(scale,scale,1.0f));
+    float shear[16] = {
+     1, 1, 0, 0,
+     0, 1, 0, 0,
+     0, 0, 1, 0,
+     0, 0, 0, 1
+    };
+    glm::mat4 trans3 = glm::make_mat4(shear);
     while(!glfwWindowShouldClose(window))
     {
     
@@ -59,6 +66,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         
         VAO1.Bind();
+        program1.SetUniform("transform", trans3);
+        glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
         program1.SetUniform("transform", trans);
         glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
         program1.SetUniform("transform", trans2);

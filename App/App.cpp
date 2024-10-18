@@ -51,6 +51,11 @@ int main()
     trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
     float scale = sin(glfwGetTime())/2 +0.5;
     trans2 = glm::scale(trans2,glm::vec3(scale,scale,1.0f));
+    glm::mat4 trans3(0,-1,0,0
+                    ,1,0,0,0
+                    ,0,0,1,0
+                    ,0,0,0,1);
+    trans3 = glm::transpose(trans3);
     while(!glfwWindowShouldClose(window))
     {
     
@@ -63,14 +68,16 @@ int main()
         glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
         program1.SetUniform("transform", trans2);
         glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
+        program1.SetUniform("transform", trans3);
+        glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
         glfwSwapBuffers(window);
 
         Sleep(1);
         trans = glm::mat4(1.0f);
         trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
         trans = glm::rotate(trans, glm::radians((float)glfwGetTime()), glm::vec3(0.0, 0.0, 1.0));
-        //trans2 = glm::mat4(1.0f);
-        //trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
+        trans2 = glm::mat4(1.0f);
+        trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
         scale = (sin(glfwGetTime())+2);
         trans2 = glm::scale(trans2,glm::vec3(scale,scale,1.0f));
         glfwPollEvents();
