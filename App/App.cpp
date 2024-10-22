@@ -18,25 +18,49 @@ int main()
     glfwSwapInterval(1);
     //objects and vertex
     float vertices[] = {
-    // positions // colors // texture coords
-    0.5f, 0.5f, 0.0f, 1.0f, 1.0f, // top right
-    0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
-    -0.5f, 0.5f, 0.0f, 0.0f, 1.0f // top left
+    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+    0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+    0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+    0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
     };
-
-    unsigned int indices[] = { // note that we start from 0!
-    0, 1, 3,
-    1, 2, 3
-    };
-    glu::ElementBuffer EBO1(indices,6, GL_STATIC_DRAW);
     glu::VertexBuffer VBO1(vertices,sizeof(vertices)/sizeof(float),GL_STATIC_DRAW);
     glu::Shader program1("Assets/Shaders/MvpVertex.glsl", "Assets/Shaders/MvpFragment.glsl");
     glu::VertexLayout VL1(2);
     VL1.PushAtrrib<float>(3);
     VL1.PushAtrrib<float>(2);
     glu::VertexArray VAO1(VBO1,VL1);
-    EBO1.Bind();
     VAO1.Unbind();
     program1.Use();
     glu::Texture2D Tex1("Assets/Textures/container.jpg",1);
@@ -50,12 +74,12 @@ int main()
     // note that we’re translating the scene in the reverse direction
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
     glm::mat4 projection;
-    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f,
+    projection = glm::perspective(glm::radians(54.0f), 800.0f / 600.0f, 0.1f,
     100.0f);
     program1.SetUniform("model",model);
     program1.SetUniform("view", view);
     program1.SetUniform("projection", projection);
-    float degree = 0.0f;
+    
     while(!glfwWindowShouldClose(window))
     {
     
@@ -64,14 +88,13 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         
         VAO1.Bind();
-        glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
         glfwSwapBuffers(window);
-         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(degree),
-        glm::vec3(1.0f, 0.0f, 0.0f));
-        degree+=2.0f;
-        program1.SetUniform("model",model);
         Sleep(1);
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(10.0f),
+        glm::vec3(0.5f, 1.0f, 0.0f));
+        program1.SetUniform("model",model);
         glfwPollEvents();
     }
     return 0;
