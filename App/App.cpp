@@ -31,7 +31,7 @@ int main()
     };
     glu::ElementBuffer EBO1(indices,6, GL_STATIC_DRAW);
     glu::VertexBuffer VBO1(vertices,sizeof(vertices)/sizeof(float),GL_STATIC_DRAW);
-    glu::Shader program1("Assets/Shaders/Mat4Vertex.glsl", "Assets/Shaders/Mat4Fragment.glsl");
+    glu::Shader program1("Assets/Shaders/MvpVertex.glsl", "Assets/Shaders/MvpFragment.glsl");
     glu::VertexLayout VL1(2);
     VL1.PushAtrrib<float>(3);
     VL1.PushAtrrib<float>(2);
@@ -43,19 +43,19 @@ int main()
     glu::Texture2D Tex2("Assets/Textures/awesomeface.png", 0, GL_RGBA);
     program1.SetUniform("texture1", (int)0);
     program1.SetUniform("texture2", (int)1);
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::rotate(trans, glm::radians((float)glfwGetTime()), glm::vec3(0.0, 0.0, 1.0));
-    trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-    program1.SetUniform("transform", trans);
-    glm::mat4 trans2 = glm::mat4(1.0f);
-    trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
-    float scale = sin(glfwGetTime())/2 +0.5;
-    trans2 = glm::scale(trans2,glm::vec3(scale,scale,1.0f));
-    glm::mat4 trans3(0,-1,0,0
-                    ,1,0,0,0
-                    ,0,0,1,0
-                    ,0,0,0,1);
-    trans3 = glm::transpose(trans3);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::radians(-55.0f),
+    glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::mat4 view = glm::mat4(1.0f);
+    // note that we’re translating the scene in the reverse direction
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    glm::mat4 projection;
+    projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f,
+    100.0f);
+    program1.SetUniform("model",model);
+    program1.SetUniform("view", view);
+    program1.SetUniform("projection", projection);
+    float degree = 0.0f;
     while(!glfwWindowShouldClose(window))
     {
     
@@ -64,22 +64,14 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         
         VAO1.Bind();
-        program1.SetUniform("transform", trans);
-        glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
-        program1.SetUniform("transform", trans2);
-        glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
-        program1.SetUniform("transform", trans3);
         glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0);
         glfwSwapBuffers(window);
-
+         glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(degree),
+        glm::vec3(1.0f, 0.0f, 0.0f));
+        degree+=2.0f;
+        program1.SetUniform("model",model);
         Sleep(1);
-        trans = glm::mat4(1.0f);
-        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-        trans = glm::rotate(trans, glm::radians((float)glfwGetTime()), glm::vec3(0.0, 0.0, 1.0));
-        trans2 = glm::mat4(1.0f);
-        trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
-        scale = (sin(glfwGetTime())+2);
-        trans2 = glm::scale(trans2,glm::vec3(scale,scale,1.0f));
         glfwPollEvents();
     }
     return 0;
