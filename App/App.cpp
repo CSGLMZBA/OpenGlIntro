@@ -2,9 +2,9 @@
 #include <windows.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-float Angle(float modifier = 0.0f);
+void processInput(GLFWwindow *window);
+glm::vec3 Translate(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 int main()
 {
     //define __APPLE__ on macos devices in case its not working
@@ -75,7 +75,7 @@ int main()
     // note that we’re translating the scene in the reverse direction
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
     glm::mat4 projection;
-    projection = glm::perspective(glm::radians(54.0f), 800.0f / 600.0f, 0.1f,
+    projection = glm::perspective(glm::radians(60.0f), 800.0f / 600.0f, 0.2f,
     100.0f);
     
     program1.SetUniform("view", view);
@@ -92,7 +92,7 @@ int main()
     glm::vec3( 1.5f, 0.2f, -1.5f),
     glm::vec3(-1.3f, 1.0f, -1.5f)
     };
-    glm::mat4 model= glm::mat4(1.0f);;
+    glm::mat4 model= glm::mat4(1.0f);
     float angle;
     int i = 0;
     while(!glfwWindowShouldClose(window))
@@ -100,12 +100,15 @@ int main()
         processInput(window);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
+        view = glm::mat4(1.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = glm::translate(view, Translate());
+        program1.SetUniform("view",view);
         VAO1.Bind();
         
         for(i = 0; i < 10; i++)
         {
-            angle = glm::radians(Angle() + i*(glfwGetTime()));
+            angle = glm::radians((!(i%3))*(glfwGetTime() * 25.0f));
             model = glm::mat4(1.0f);
             model = glm::translate(model,cubePositions[i]);
             model = glm::rotate(model, angle ,glm::vec3(0.5f, 1.0f, 0.0f));
@@ -124,28 +127,24 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
+glm::vec3 Translate(float x, float y, float z)
+{
+    static glm::vec3 CamPos = glm::vec3( 0.0f, 0.0f, 0.0f);
+    CamPos += glm::vec3(x,y,z);
+    return CamPos;
+}
 void processInput(GLFWwindow *window)
 {
-    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-                Angle(1.0f);
-    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-                Angle(-1.0f);
+    float y = (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) - (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS);
+    float x = (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) - (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS);
+    Translate(-x/50.0f,-y/50.0f);
 }
-
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if(action == GLFW_PRESS)
     {
         switch(key)
         {
-            case GLFW_KEY_UP: 
-                Angle(1.0f);
-                action = GLFW_REPEAT;
-            break;
-            case GLFW_KEY_DOWN: 
-                Angle(-1.0f);
-                action = GLFW_REPEAT;
-            break;
             case GLFW_KEY_P: 
                 glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
             break;
@@ -166,10 +165,4 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         }
     }
     
-}
-float Angle(float modifier)
-{
-    static float angle = 0.0f;
-    angle+=modifier*10.5f;
-    return angle;
 }
