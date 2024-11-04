@@ -1,5 +1,14 @@
 #include "pch.hpp"
 #include <windows.h>
+class Timeclass
+{
+    private:
+    public:
+    float deltaTime = 0.0f; // Time between current frame and last frame
+    float lastFrame = 0.0f; // Time of last frame
+    Timeclass() = default;
+};
+Timeclass Time;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
