@@ -59,27 +59,6 @@ int main()
     -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
     -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
     };
-    glu::VertexBuffer VBO1(vertices,sizeof(vertices)/sizeof(float),GL_STATIC_DRAW);
-    glu::Shader program1("Assets/Shaders/MvpVertex.glsl", "Assets/Shaders/MvpFragment.glsl");
-    glu::VertexLayout VL1(2);
-    VL1.PushAtrrib<float>(3);
-    VL1.PushAtrrib<float>(2);
-    glu::VertexArray VAO1(VBO1,VL1);
-    VAO1.Unbind();
-    program1.Use();
-    glu::Texture2D Tex1("Assets/Textures/container.jpg",1);
-    glu::Texture2D Tex2("Assets/Textures/awesomeface.png", 0, GL_RGBA);
-    program1.SetUniform("texture1", (int)0);
-    program1.SetUniform("texture2", (int)1);
-    glm::mat4 view = glm::mat4(1.0f);
-    // note that we’re translating the scene in the reverse direction
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-    glm::mat4 projection;
-    projection = glm::perspective(glm::radians(60.0f), 800.0f / 600.0f, 0.2f,
-    100.0f);
-    
-    program1.SetUniform("view", view);
-    program1.SetUniform("projection", projection);
     glm::vec3 cubePositions[] = {
     glm::vec3( 0.0f, 0.0f, 0.0f),
     glm::vec3( 2.0f, 5.0f, -15.0f),
@@ -92,6 +71,30 @@ int main()
     glm::vec3( 1.5f, 0.2f, -1.5f),
     glm::vec3(-1.3f, 1.0f, -1.5f)
     };
+    glu::VertexBuffer VBO1(vertices,sizeof(vertices)/sizeof(float),GL_STATIC_DRAW);
+    glu::Shader program1("Assets/Shaders/MvpVertex.glsl", "Assets/Shaders/MvpFragment.glsl");
+    glu::VertexLayout VL1(2);
+    VL1.PushAtrrib<float>(3);
+    VL1.PushAtrrib<float>(2);
+    glu::VertexArray VAO1(VBO1,VL1);
+    VAO1.Unbind();
+    program1.Use();
+    glu::Texture2D Tex1("Assets/Textures/container.jpg",1);
+    glu::Texture2D Tex2("Assets/Textures/awesomeface.png", 0, GL_RGBA);
+    program1.SetUniform("texture1", (int)0);
+    program1.SetUniform("texture2", (int)1);
+    const float radius = 10.0f;
+    glm::mat4 view;
+    float camX = sin(glfwGetTime()) * radius;
+    float camZ = cos(glfwGetTime()) * radius;
+    view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0),
+    glm::vec3(0.0, 1.0, 0.0));
+    glm::mat4 projection;
+    projection = glm::perspective(glm::radians(60.0f), 800.0f / 600.0f, 0.2f,
+    100.0f);
+    
+    program1.SetUniform("view", view);
+    program1.SetUniform("projection", projection);
     glm::mat4 model= glm::mat4(1.0f);
     float angle;
     int i = 0;
@@ -100,12 +103,12 @@ int main()
         processInput(window);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        view = glm::translate(view, Translate());
-        program1.SetUniform("view",view);
         VAO1.Bind();
-        
+        float camX = sin(glfwGetTime()) * radius;
+        float camZ = cos(glfwGetTime()) * radius;
+        view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(1.0, 1.0, 0.0),
+        glm::vec3(0.0, 1.0, 0.0));
+        program1.SetUniform("view", view);
         for(i = 0; i < 10; i++)
         {
             angle = glm::radians((!(i%3))*(glfwGetTime() * 25.0f));
@@ -135,10 +138,12 @@ glm::vec3 Translate(float x, float y, float z)
 }
 void processInput(GLFWwindow *window)
 {
-    float z = (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) - (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS);
-    float y = (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) - (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS);
-    float x = (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) - (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS);
-    Translate(-x/50.0f,-y/50.0f,z/50.0f);
+    static float x,y,z,div;
+    z = (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) - (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS);
+    y = (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) - (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS);
+    x = (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) - (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS);
+    div = 50.0f-40.0f*(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS);
+    Translate(-x/div,-y/div,z/div);
 }
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
