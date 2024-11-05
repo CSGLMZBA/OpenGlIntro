@@ -1,22 +1,93 @@
 #include "pch.hpp"
 #include <windows.h>
+
 class Timeclass
 {
     private:
     public:
     float deltaTime = 0.0f; // Time between current frame and last frame
     float lastFrame = 0.0f; // Time of last frame
+    float currentFrame = 0.0f;
+    void NewFrame()
+    {
+        currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+    }
+    float DeltaTime(){return deltaTime;}
     Timeclass() = default;
 };
 Timeclass Time;
+class Camera
+{
+    private:
+    glm::vec3 direction;
+    float pitch,yaw;
+    glm::vec3 cameraPos;
+    glm::vec3 cameraFront;
+    glm::vec3 cameraUp;
+    glm::mat4 view;
+    glm::mat4 projection;
+    public:
+    Camera()
+    {
+        pitch = 0.0f;
+        yaw  = 0.0f;
+        cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+        direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        direction.y = sin(glm::radians(pitch));
+        direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        cameraFront = glm::normalize(direction);
+        cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        projection = glm::perspective(glm::radians(80.0f), 800.0f / 600.0f, 0.2f,
+        100.0f);
+    }
+    void MovePos(glm::vec3& Val)
+    {
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * Val.x;
 
+        cameraPos += Val.y * cameraUp;
+
+        cameraPos += Val.z * cameraFront;
+
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    }
+    void ChangeAngle(float& aYaw, float& aPitch)
+    {
+        yaw = aYaw;
+        pitch = aPitch;
+        if(pitch > 89.0f)
+            pitch = 89.0f;
+        if(pitch < -89.0f)
+            pitch = -89.0f;
+
+        direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        direction.y = sin(glm::radians(pitch));
+        direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        cameraFront = glm::normalize(direction);
+        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    }
+    glm::mat4& GetViewMatrix()
+    {
+        return view;
+    }
+    glm::mat4& GetProjectionMatrix()
+    {
+        return projection;
+    }
+    
+};
+Camera cam1;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 glm::vec3 Translate(float x = 0.0f, float y = 0.0f, float z = 0.0f);
-void processInput(GLFWwindow *window,glm::vec3& cameraPos,const glm::vec3& cameraFront, const glm::vec3& cameraUp);
+void processInput(GLFWwindow *window,Camera& cam1);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 int main()
 {
     //define __APPLE__ on macos devices in case its not working
+    
     glu::Context MainContext(4,3,GLFW_OPENGL_CORE_PROFILE);
     GLFWwindow* window = glfwCreateWindow(800, 600, "INTROOPENGL", NULL, NULL);
     MainContext.AddWindow(window);
@@ -29,6 +100,8 @@ int main()
     MainContext.EnableDebugCallbacks();
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
     //objects and vertex
     float vertices[] = {
     -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
@@ -92,23 +165,18 @@ int main()
     glu::Texture2D Tex2("Assets/Textures/awesomeface.png", 0, GL_RGBA);
     program1.SetUniform("texture1", (int)0);
     program1.SetUniform("texture2", (int)1);
-    const float radius = 10.0f;
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-    glm::vec3 cameraFront = glm::vec3(0.0f, -1.0f, -1.0f);
-    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    program1.SetUniform("view", view);
-    glm::mat4 projection = glm::perspective(glm::radians(80.0f), 800.0f / 600.0f, 0.2f,
-    100.0f);
-    program1.SetUniform("projection", projection);
+    
+    program1.SetUniform("projection", cam1.GetProjectionMatrix());
     glm::mat4 model= glm::mat4(1.0f);
     float angle;
     int i = 0;
+    float yaw = 0, pitch = 0;
     while(!glfwWindowShouldClose(window))
     {
-        processInput(window,cameraPos,cameraFront, cameraUp);
-        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        program1.SetUniform("view", view);
+        Time.NewFrame();
+        processInput(window,cam1);
+        
+        program1.SetUniform("view", cam1.GetViewMatrix());
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         VAO1.Bind();
@@ -124,30 +192,48 @@ int main()
         glfwSwapBuffers(window);
         Sleep(1);
         glfwPollEvents();
+        
     }
     return 0;
+}
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{    
+    
+    static float lastX = 400, lastY = 300;
+    static bool firstMouse = true;
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+    static float xoffset = xpos - lastX;
+    static float yoffset = lastY - ypos; // reversed: y ranges bottom to top
+    lastX = xpos;
+    lastY = ypos;
+    static const float sensitivity = 1.0f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+    cam1.ChangeAngle(xoffset,yoffset);
 }
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
-glm::vec3 Translate(float x, float y, float z)
+void processInput(GLFWwindow *window,Camera& cam1)
 {
-    static glm::vec3 CamPos = glm::vec3( 0.0f, 0.0f, 0.0f);
-    CamPos += glm::vec3(x,y,z);
-    return CamPos;
-}
-void processInput(GLFWwindow *window,glm::vec3& cameraPos,const glm::vec3& cameraFront, const glm::vec3& cameraUp)
-{
-    const float cameraSpeed = 0.05f; // adjust accordingly
+    static float cameraSpeed = 0;
+    cameraSpeed = 0.5f * Time.DeltaTime(); // adjust accordingly
+    glm::vec3 MoveVec(0.0f);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    cameraPos += cameraSpeed * cameraFront;
+    MoveVec.z+=cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    cameraPos -= cameraSpeed * cameraFront;
+    MoveVec.z-=cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-    cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    MoveVec.x -= cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-    cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    MoveVec.x += cameraSpeed;
+    cam1.MovePos(MoveVec);
 }
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
