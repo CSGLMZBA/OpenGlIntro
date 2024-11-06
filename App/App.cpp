@@ -31,9 +31,9 @@ class Camera
     public:
     Camera()
     {
-        pitch = 0.0f;
-        yaw  = 0.0f;
-        cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+        pitch = 00.0f;
+        yaw  = 00.0f;
+        cameraPos = glm::vec3(-10.0f, 0.0f, 3.0f);
         direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         direction.y = sin(glm::radians(pitch));
         direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
@@ -170,12 +170,10 @@ int main()
     glm::mat4 model= glm::mat4(1.0f);
     float angle;
     int i = 0;
-    float yaw = 0, pitch = 0;
     while(!glfwWindowShouldClose(window))
     {
         Time.NewFrame();
         processInput(window,cam1);
-        
         program1.SetUniform("view", cam1.GetViewMatrix());
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -199,19 +197,18 @@ int main()
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {    
     
-    static float lastX = 400, lastY = 300;
-    static bool firstMouse = true;
-    if (firstMouse)
+    static float lastX = xpos, lastY = ypos;
+    static bool firstMouse = false;
+    if (!firstMouse)
     {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
+        lastX = 400;
+        lastY = 300;
     }
-    static float xoffset = xpos - lastX;
-    static float yoffset = lastY - ypos; // reversed: y ranges bottom to top
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed: y ranges bottom to top
     lastX = xpos;
     lastY = ypos;
-    static const float sensitivity = 1.0f;
+    static const float sensitivity = 0.1f;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
     cam1.ChangeAngle(xoffset,yoffset);
@@ -223,7 +220,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 void processInput(GLFWwindow *window,Camera& cam1)
 {
     static float cameraSpeed = 0;
-    cameraSpeed = 0.5f * Time.DeltaTime(); // adjust accordingly
+    cameraSpeed = 2.0f * Time.DeltaTime(); // adjust accordingly
     glm::vec3 MoveVec(0.0f);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     MoveVec.z+=cameraSpeed;
