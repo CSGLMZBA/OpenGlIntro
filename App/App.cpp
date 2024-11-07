@@ -22,17 +22,19 @@ class Camera
 {
     private:
     glm::vec3 direction;
-    float pitch,yaw;
+    float pitch,yaw,fov;
     glm::vec3 cameraPos;
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
     glm::mat4 view;
     glm::mat4 projection;
+
     public:
     Camera()
     {
         pitch = 00.0f;
         yaw  = 00.0f;
+        fov = 80.0f;
         cameraPos = glm::vec3(-10.0f, 0.0f, 3.0f);
         direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         direction.y = sin(glm::radians(pitch));
@@ -40,7 +42,7 @@ class Camera
         cameraFront = glm::normalize(direction);
         cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        projection = glm::perspective(glm::radians(80.0f), 800.0f / 600.0f, 0.2f,
+        projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.2f,
         100.0f);
     }
     void MovePos(glm::vec3& Val)
@@ -68,6 +70,16 @@ class Camera
         cameraFront = glm::normalize(direction);
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     }
+    void ChangeFov(float changeval)
+    {
+        fov+= changeval;
+        if (fov < 1.0f)
+            fov = 1.0f;
+        if (fov > 80.0f)
+            fov = 80.0f;
+        projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.2f,
+        100.0f);
+    }
     glm::mat4& GetViewMatrix()
     {
         return view;
@@ -81,9 +93,9 @@ class Camera
 Camera cam1;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-glm::vec3 Translate(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 void processInput(GLFWwindow *window,Camera& cam1);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 int main()
 {
     //define __APPLE__ on macos devices in case its not working
@@ -102,6 +114,7 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
     //objects and vertex
     float vertices[] = {
     -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
@@ -165,8 +178,6 @@ int main()
     glu::Texture2D Tex2("Assets/Textures/awesomeface.png", 0, GL_RGBA);
     program1.SetUniform("texture1", (int)0);
     program1.SetUniform("texture2", (int)1);
-    
-    program1.SetUniform("projection", cam1.GetProjectionMatrix());
     glm::mat4 model= glm::mat4(1.0f);
     float angle;
     int i = 0;
@@ -175,6 +186,7 @@ int main()
         Time.NewFrame();
         processInput(window,cam1);
         program1.SetUniform("view", cam1.GetViewMatrix());
+        program1.SetUniform("projection", cam1.GetProjectionMatrix());
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         VAO1.Bind();
@@ -258,4 +270,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         }
     }
     
+}
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    cam1.ChangeFov(-(float)yoffset*10.0f);
 }
