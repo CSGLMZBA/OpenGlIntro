@@ -1,7 +1,8 @@
 #pragma once
 #include <GL/glew.h>
 #include <GLFW\glfw3.h>
-void InnitGl()
+namespace setup{
+void InnitGlfw()
 {
     glfwInit();
     unsigned int MAJOR =4, MINOR = 3, PROFILE = GLFW_OPENGL_CORE_PROFILE;
@@ -16,19 +17,10 @@ void InnitGl()
     #endif
 }
 
-void CreateWindow(GLFWwindow* window)
+void InnitGlew()
 {
-    unsigned int width = 800, height = 600;
-    const char *title = "INTRO OPEN GL";
-    GLFWmonitor *monitor = NULL;
-    GLFWwindow *share = NULL;
-    window =glfwCreateWindow(width, height, title, monitor, share);
-    if(window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();}
-    else
-    {
-        glfwMakeContextCurrent(window);
-    }
+    GLenum err = glewInit();
+    if (GLEW_OK != err)
+        std::cout << glewGetErrorString(err);
+}
 }

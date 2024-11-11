@@ -13,7 +13,7 @@ ElementBuffer::~ElementBuffer()
 void ElementBuffer::Bind() 
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mRendererID);
-}
+}   
 void ElementBuffer::Unbind() 
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

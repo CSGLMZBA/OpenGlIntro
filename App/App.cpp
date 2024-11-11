@@ -101,21 +101,18 @@ int main()
 {
     //define __APPLE__ on macos devices in case its not working
     
-    glu::Context MainContext(4,3,GLFW_OPENGL_CORE_PROFILE);
-    GLFWwindow* window = glfwCreateWindow(800, 600, "INTROOPENGL", NULL, NULL);
-    MainContext.AddWindow(window);
-    GLenum err = glewInit();
-    if (GLEW_OK != err)
-        std::cout << glewGetErrorString(err);
+    setup::InnitGlfw();
+    glu::Window window(800,600);
+    setup::InnitGlew();
     glViewport(0, 0, 800, 600);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetKeyCallback(window, key_callback);
-    MainContext.EnableDebugCallbacks();
-    glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
+    glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
+    glfwSetKeyCallback(*window, key_callback);
+    glu::EnableDebugCallbacks();
+    glfwSwapInterval(1);
+    //glfwSetInputMode(*window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(*window, mouse_callback);
+    glfwSetScrollCallback(*window, scroll_callback);
     //objects and vertex
     float vertices[] = {
     -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
@@ -182,10 +179,11 @@ int main()
     glm::mat4 model= glm::mat4(1.0f);
     float angle;
     int i = 0;
-    while(!glfwWindowShouldClose(window))
+    while(!glfwWindowShouldClose(*window))
     {
+        glViewport(0, 0, 800, 600);
         Time.NewFrame();
-        processInput(window,cam1);
+        processInput(*window,cam1);
         program1.SetUniform("view", cam1.GetViewMatrix());
         program1.SetUniform("projection", cam1.GetProjectionMatrix());
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -200,11 +198,12 @@ int main()
             program1.SetUniform("model",model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(*window);
         Sleep(1);
         glfwPollEvents();
         
     }
+    glfwTerminate();
     return 0;
 }
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
