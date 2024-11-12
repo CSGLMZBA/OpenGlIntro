@@ -42,8 +42,7 @@
 // modified for C++ by Plasmoxy [7. 5. 2020], I'm using: GLEW and GLFW3, OpenGL 4.6
 // original gist: https://gist.github.com/liam-middlebrook/c52b069e4be2d87a6d2f
 
-#include <GLU/DebugCallback.hpp>
-namespace glu{
+#include "DebugCallback.hpp"
 // Callback function for printing debug statements
 void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length,
@@ -150,5 +149,4 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
         __debugbreak();
 #endif
     }
-}
 }

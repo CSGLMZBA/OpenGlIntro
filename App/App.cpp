@@ -1,5 +1,5 @@
-#include "GLsetup.hpp"
 #include "pch.hpp"
+#include "GLsetup.hpp"
 #include <windows.h>
 
 class Timeclass
@@ -7,7 +7,7 @@ class Timeclass
     private:
     public:
     float deltaTime = 0.0f; // Time between current frame and last frame
-    float lastFrame = 0.0f; // Time of last frame
+    float lastFrame = 0.0f; // Time of last frames
     float currentFrame = 0.0f;
     void NewFrame()
     {
@@ -94,6 +94,7 @@ class Camera
 Camera cam1;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void key_callback2(GLFWwindow* window, int key, int scancode, int action, int mods);
 void processInput(GLFWwindow *window,Camera& cam1);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -108,7 +109,7 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
     glfwSetKeyCallback(*window, key_callback);
-    glu::EnableDebugCallbacks();
+    setup::EnableDebugCallbacks();
     glfwSwapInterval(1);
     //glfwSetInputMode(*window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(*window, mouse_callback);
@@ -265,6 +266,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             break;
             case GLFW_KEY_ESCAPE: 
                 glfwSetWindowShouldClose(window, true);
+            break;
+            default: break;
+        }
+    }
+    
+}
+void key_callback2(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if(action == GLFW_PRESS)
+    {
+        switch(key)
+        {
+            case GLFW_KEY_Q: 
+                glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
             break;
             default: break;
         }

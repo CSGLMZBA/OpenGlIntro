@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <GLU/Context.hpp>
-#include <GLU/DebugCallback.hpp>
+#include <GL/glew.h>
+#include <GLFW\glfw3.h>
 #include <GLU/ElementBuffer.hpp>
 #include <GLU/VertexBuffer.hpp>
 #include <GLU/Shader.hpp>
