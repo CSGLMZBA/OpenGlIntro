@@ -15,6 +15,7 @@ namespace glu
         Window(unsigned int width, unsigned int height, const char* title = "Window");
         ~Window();
         void Bind();
+        void resize(float aWidth, float aHeight);
         GLFWwindow* getWindow()
         {
             return mWindow;

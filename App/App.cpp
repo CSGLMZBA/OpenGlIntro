@@ -2,28 +2,34 @@
 #include "GLsetup.hpp"
 #include <windows.h>
 
-class Timeclass
+class Time
 {
     private:
+    static float deltaTime; // Time between current frame and last frame
+    static float lastFrame; // Time of last frames
+    static float currentFrame;
     public:
-    float deltaTime = 0.0f; // Time between current frame and last frame
-    float lastFrame = 0.0f; // Time of last frames
-    float currentFrame = 0.0f;
-    void NewFrame()
+    Time(const Time&) = delete;
+
+    static void UpdateTime()
     {
         currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
     }
-    float DeltaTime(){return deltaTime;}
-    Timeclass() = default;
+    static float DeltaTime(){return deltaTime;}
+    private:
+        Time(){}
 };
-Timeclass Time;
+float Time::deltaTime(0);
+float Time::lastFrame(0);
+float Time::currentFrame(0);
+
 class Camera
 {
     private:
     glm::vec3 direction;
-    float pitch,yaw,fov;
+    float pitch,yaw,fov,width,height;
     glm::vec3 cameraPos;
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
@@ -36,6 +42,8 @@ class Camera
         pitch = 00.0f;
         yaw  = 00.0f;
         fov = 80.0f;
+        width = 800;
+        height = 600;
         cameraPos = glm::vec3(-10.0f, 0.0f, 3.0f);
         direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         direction.y = sin(glm::radians(pitch));
@@ -43,7 +51,7 @@ class Camera
         cameraFront = glm::normalize(direction);
         cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-        projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.2f,
+        projection = glm::perspective(glm::radians(fov), (float)(width / height), 0.2f,
         100.0f);
     }
     void MovePos(glm::vec3& Val)
@@ -71,6 +79,12 @@ class Camera
         cameraFront = glm::normalize(direction);
         view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     }
+    void SetDimentions(float aWidth, float aHeight)
+    {
+        width = aWidth;
+        height = aHeight;
+        projection = glm::perspective(glm::radians(fov),(float)(width / height), 0.2f, 100.0f);
+    }
     void ChangeFov(float changeval)
     {
         fov+= changeval;
@@ -78,7 +92,7 @@ class Camera
             fov = 1.0f;
         if (fov > 80.0f)
             fov = 80.0f;
-        projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.2f,
+        projection = glm::perspective(glm::radians(fov), (float)(width / height), 0.2f,
         100.0f);
     }
     glm::mat4& GetViewMatrix()
@@ -182,8 +196,7 @@ int main()
     int i = 0;
     while(!glfwWindowShouldClose(*window))
     {
-        glViewport(0, 0, 800, 600);
-        Time.NewFrame();
+        Time::UpdateTime();
         processInput(*window,cam1);
         program1.SetUniform("view", cam1.GetViewMatrix());
         program1.SetUniform("projection", cam1.GetProjectionMatrix());
@@ -229,11 +242,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+    cam1.SetDimentions(width,height);
+    std::cout << width << " x " << height << std::endl;
 }
 void processInput(GLFWwindow *window,Camera& cam1)
-{
+{   
     static float cameraSpeed = 0;
-    cameraSpeed = 2.0f * Time.DeltaTime(); // adjust accordingly
+    cameraSpeed = 2.0f * Time::DeltaTime(); // adjust accordingly
     glm::vec3 MoveVec(0.0f);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     MoveVec.z+=cameraSpeed;
