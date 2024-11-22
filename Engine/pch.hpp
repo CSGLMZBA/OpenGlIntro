@@ -1,0 +1,15 @@
+#pragma once
+#include <iostream>
+#include <string>
+#include <GL/glew.h>
+#include <GLFW\glfw3.h>
+#include <GLU/ElementBuffer.hpp>
+#include <GLU/VertexBuffer.hpp>
+#include <GLU/Shader.hpp>
+#include <GLU/VertexArray.hpp>
+#include <GLU/Texture2D.hpp>
+#include <GLU/Window.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <cmath>

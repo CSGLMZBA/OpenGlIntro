@@ -1,5 +1,5 @@
 #set the name of the executable
-project(OpenGlIntro)
+project(Engine)
 #add all files as executables (use of glob is not recommended glob uses all of the files in the current folder glob recurse checks all of the files in the current folder and below configure depends 
 #makes it so it checks for new files every single time adding a step up to compilation time)
 file(GLOB_RECURSE APP CONFIGURE_DEPENDS *.cpp *hpp *h)

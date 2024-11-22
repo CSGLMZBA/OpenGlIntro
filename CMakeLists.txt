@@ -14,4 +14,4 @@ add_subdirectory(ThirdParty)
 #Add custom core project
 add_subdirectory(Core)
 #Add app project
-add_subdirectory(App)
+add_subdirectory(Engine)
