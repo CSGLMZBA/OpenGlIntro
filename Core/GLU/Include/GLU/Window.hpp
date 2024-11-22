@@ -16,11 +16,7 @@ namespace glu
         ~Window();
         void Bind();
         void resize(float aWidth, float aHeight);
-        GLFWwindow* getWindow()
-        {
-            return mWindow;
-        }
-        GLFWwindow* operator*()
+        GLFWwindow* getWindowPointer()
         {
             return mWindow;
         }
