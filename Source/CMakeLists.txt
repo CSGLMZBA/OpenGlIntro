@@ -6,12 +6,12 @@ file(GLOB_RECURSE APP CONFIGURE_DEPENDS *.cpp *hpp *h)
 add_executable(${PROJECT_NAME} ${APP})
 
 #precompile headers to aliviate a little the compiation time
-target_precompile_headers(${PROJECT_NAME} PRIVATE pch.hpp)
+target_precompile_headers(${PROJECT_NAME} PRIVATE Precompile.hpp MyLibs.hpp)
 
 # link needed libraries: target_link_libraries(${PROJECT_NAME} PRIVATE example )
 
 #link libraries from core
-target_link_libraries(${PROJECT_NAME} PRIVATE Core::CoreLib Core::glu glfw libglew_static stb glm::glm)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw libglew_static stb glm::glm)
 
 #Link assets folder to the build folder for each type so it works on any compiler or IDE
 add_custom_command(

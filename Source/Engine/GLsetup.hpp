@@ -1,5 +1,5 @@
 #pragma once
-#include "pch.hpp"
+#include "../Precompile.hpp"
 #include "DebugCallback.hpp"
 namespace setup{
     void InnitGlfw();

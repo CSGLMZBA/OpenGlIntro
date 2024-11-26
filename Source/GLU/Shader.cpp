@@ -1,4 +1,4 @@
-#include <GLU/shader.hpp>
+#include "Shader.hpp"
 namespace glu{
 Shader::Shader(const char *vertexPath, const char *fragmentPath) 
 {

@@ -1,4 +1,4 @@
-#include <GLU/VertexLayout.hpp>
+#include "VertexLayout.hpp"
 namespace glu{
 VertexLayout::VertexLayout(unsigned int aNumberOfAttributes, 
 unsigned int aStride,unsigned int aOffset):

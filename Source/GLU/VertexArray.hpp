@@ -1,7 +1,7 @@
 #pragma once 
-#include <GLU/gluSet.hpp>
-#include <GLU/VertexBuffer.hpp>
-#include <GLU/VertexLayout.hpp>
+#include "gluSet.hpp"
+#include "VertexBuffer.hpp"
+#include "VertexLayout.hpp"
 namespace glu{
 class VertexArray
 {

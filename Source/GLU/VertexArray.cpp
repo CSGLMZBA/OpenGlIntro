@@ -1,4 +1,4 @@
-#include <GLU/VertexArray.hpp>
+#include "VertexArray.hpp"
 
 namespace glu{
 VertexArray::VertexArray(){

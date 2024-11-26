@@ -1,4 +1,4 @@
-#include <GLU/VertexBuffer.hpp>
+#include "VertexBuffer.hpp"
 namespace glu{
 VertexBuffer::~VertexBuffer() {}
 

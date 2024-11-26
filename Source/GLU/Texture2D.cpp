@@ -1,5 +1,5 @@
 
-#include "GLU/Texture2D.hpp"
+#include "Texture2D.hpp"
 #include <iostream>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>

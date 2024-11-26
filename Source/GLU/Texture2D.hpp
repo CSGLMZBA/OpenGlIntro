@@ -1,5 +1,5 @@
 #pragma once
-#include <GLU/Texture.hpp>
+#include "Texture.hpp"
 #include <string>
 namespace glu
 {

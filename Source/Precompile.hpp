@@ -1,0 +1,16 @@
+#pragma once
+#include <iostream>
+#include <string>
+#include <GL/glew.h>
+#include <GLFW\glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <cmath>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <tuple>
+#include <unordered_map>
+#include <windows.h>

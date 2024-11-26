@@ -1,11 +1,6 @@
 #pragma once
-#include <GLU/gluSet.hpp>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <tuple>
-#include <unordered_map>
+#include "gluSet.hpp"
+
 namespace glu{
 class Shader
 {

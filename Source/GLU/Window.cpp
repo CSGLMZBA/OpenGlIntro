@@ -1,4 +1,4 @@
-#include <GLU/Window.hpp>
+#include "Window.hpp"
 namespace glu
 {
     Window::Window(unsigned int width, unsigned int height, const char* title)
@@ -11,11 +11,6 @@ namespace glu
         {
             std::cout << "Failed to create GLFW window" << std::endl;
         }
-        else
-        {
-            glfwMakeContextCurrent(mWindow);
-        }
-        
     }
     Window::~Window()
     {

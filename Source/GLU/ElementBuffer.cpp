@@ -1,4 +1,4 @@
-#include <GLU/ElementBuffer.hpp>
+#include "ElementBuffer.hpp"
 namespace glu{
 ElementBuffer::ElementBuffer(unsigned int aData[], unsigned int count, unsigned int usage):mData(aData)
 {

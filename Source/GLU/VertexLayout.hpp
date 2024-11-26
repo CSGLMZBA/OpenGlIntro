@@ -1,6 +1,5 @@
 #pragma once
-#include <GLU/gluSet.hpp>
-#include <vector>
+#include "gluSet.hpp"
 namespace glu{
 struct Attribute
 {

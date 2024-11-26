@@ -1,26 +1,15 @@
-#include "pch.hpp"
-#include "GLsetup.hpp"
-#include <windows.h>
-#include "Utilities/Time/Time.hpp"
-#include "Objects/Camera.hpp"
-class InputManager
-{
-    private: 
-    private:
-    static glu::Window& currentWindow;
-    InputManager(glu::Window& InitialWindow){currentWindow = InitialWindow;};
-    public:
-    static InputManager SingleInstance;
-    static void SetWindow(glu::Window& NewWindow)
-    {
-        currentWindow = NewWindow;
-    }
-    static GLFWwindow* GetWindow()
-    {
-        return currentWindow.getWindowPointer();
-    }
+#include "Engine.hpp"
 
-};
+class Engine
+{
+    public:
+    Engine() = default;
+    ~Engine();
+
+    private:
+    Camera SceneCam;
+
+}
 Camera cam1;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -36,14 +25,13 @@ void SetCallbacks()
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
 }
-int main()
+void mainLoop()
 {
     //define __APPLE__ on macos devices in case its not working
-    
     setup::InnitGlfw();
     glu::Window window(800,600);
+    window.Bind();
     setup::InnitGlew();
-    InputManager InputManager::SingleInstance(window);
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
     

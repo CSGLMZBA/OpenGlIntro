@@ -1,5 +1,5 @@
 #pragma once
-#include <GLU/gluSet.hpp>
+#include "gluSet.hpp"
 namespace glu{
 class VertexBuffer
 {

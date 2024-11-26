@@ -1,5 +1,5 @@
 #pragma once 
-#include <GLU/gluset.hpp>
+#include "gluSet.hpp"
 
 namespace glu
 {
@@ -15,7 +15,6 @@ namespace glu
         Window(unsigned int width, unsigned int height, const char* title = "Window");
         ~Window();
         void Bind();
-        void resize(float aWidth, float aHeight);
         GLFWwindow* getWindowPointer()
         {
             return mWindow;
