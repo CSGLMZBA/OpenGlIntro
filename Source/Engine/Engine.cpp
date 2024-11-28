@@ -1,44 +1,70 @@
 #include "Engine.hpp"
+class InputManager
+{
+    private:
+    GLFWwindow* inputWindow;
+    public:
+    InputManager(GLFWwindow* inpw);
+    void Start();
+    void SetCallbacks();
+    public:
+    void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void key_callback2(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void processInput(GLFWwindow *window,Camera& engineCamera);
+    void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
+};
+InputManager::InputManager(GLFWwindow* inpw):inputWindow(inpw)
+{
+
+}
+void InputManager::Start()
+{
+    glfwSetInputMode(inputWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    SetCallbacks();
+}
+void InputManager::SetCallbacks()
+{
+    glfwSetFramebufferSizeCallback(inputWindow  , framebuffer_size_callback);
+    glfwSetKeyCallback(inputWindow, key_callback);
+    glfwSetCursorPosCallback(inputWindow, mouse_callback);
+    glfwSetScrollCallback(inputWindow, scroll_callback);
+}
 class Engine
 {
+    private:
+    glu::Window engineWindow;
+    Camera engineCamera;
+    InputManager engineInput;
     public:
     Engine() = default;
     ~Engine();
+    void Init();
+    void Run();
+    void End();
+    void FrameLoop();
 
-    private:
-    Camera SceneCam;
-
-}
-Camera cam1;
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-void key_callback2(GLFWwindow* window, int key, int scancode, int action, int mods);
-void processInput(GLFWwindow *window,Camera& cam1);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void SetCallbacks()
-{
-    GLFWwindow* window = InputManager::GetWindow();
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetKeyCallback(window, key_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
-}
-void mainLoop()
+};
+void Engine::Init()
 {
     //define __APPLE__ on macos devices in case its not working
     setup::InnitGlfw();
-    glu::Window window(800,600);
-    window.Bind();
+    engineWindow = glu::Window(800,600);
+    engineWindow.Bind();
     setup::InnitGlew();
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
-    
     setup::EnableDebugCallbacks();
     glfwSwapInterval(1);
-    glfwSetInputMode(InputManager::GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    //objects and vertex
+    engineInput = InputManager(engineWindow.getWindowPointer());
+    engineInput.Start();
+
+}
+void Engine::Run()
+{
+     //objects and vertex
     float vertices[] = {
     -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
     0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
@@ -104,13 +130,12 @@ void mainLoop()
     glm::mat4 model= glm::mat4(1.0f);
     float angle;
     int i = 0;
-    while(!glfwWindowShouldClose(InputManager::GetWindow()))
+    while(!(engineWindow.shouldClose()))
     {
         TimeManager::UpdateTime();
         glfwGetTime();
-        processInput(InputManager::GetWindow(),cam1);
-        program1.SetUniform("view", cam1.GetViewMatrix());
-        program1.SetUniform("projection", cam1.GetProjectionMatrix());
+        program1.SetUniform("view", engineCamera.GetViewMatrix());
+        program1.SetUniform("projection", engineCamera.GetProjectionMatrix());
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         VAO1.Bind();
@@ -123,14 +148,24 @@ void mainLoop()
             program1.SetUniform("model",model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-        glfwSwapBuffers(InputManager::GetWindow());
+        FrameLoop();
+        glfwSwapBuffers(engineWindow.getWindowPointer());
         Sleep(1);
         glfwPollEvents();
         
     }
-    glfwTerminate();
-    return 0;
 }
+void Engine::FrameLoop()
+{
+   
+}
+
+void Engine::End()
+{
+    glfwTerminate();
+}
+
+    
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {    
     
@@ -148,15 +183,15 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     static const float sensitivity = 0.1f;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
-    cam1.ChangeAngle(xoffset,yoffset);
+    engineCamera.ChangeAngle(xoffset,yoffset);
 }
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    cam1.SetDimentions(width,height);
+    engineCamera.SetDimentions(width,height);
     std::cout << width << " x " << height << std::endl;
 }
-void processInput(GLFWwindow *window,Camera& cam1)
+void processInput(GLFWwindow *window,Camera& engineCamera)
 {   
     static float cameraSpeed = 0;
     cameraSpeed = 2.0f * Time.deltaTime; // adjust accordingly
@@ -169,7 +204,7 @@ void processInput(GLFWwindow *window,Camera& cam1)
     MoveVec.x -= cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     MoveVec.x += cameraSpeed;
-    cam1.MovePos(MoveVec);
+    engineCamera.MovePos(MoveVec);
 }
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -214,5 +249,5 @@ void key_callback2(GLFWwindow* window, int key, int scancode, int action, int mo
 }
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    cam1.ChangeFov(-(float)yoffset*10.0f);
+    engineCamera.ChangeFov(-(float)yoffset*10.0f);
 }

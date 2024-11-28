@@ -19,6 +19,10 @@ namespace glu
         {
             return mWindow;
         }
+        bool shouldClose
+        {
+            return glfwWindowShouldClose(mWindow);
+        }
 
     };
     

@@ -2,8 +2,8 @@
 
 int main()
 {
-    auto engine* = new Engine;
-    engine->Innit();
+    auto* engine = new Engine;
+    engine->Init();
     engine->Run();
     engine->End();
     delete engine;
