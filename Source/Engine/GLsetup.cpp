@@ -15,6 +15,9 @@ void InnitGlfw()
     #ifdef _DEBUG
         glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
     #endif
+    if(!glfwInit()){
+        std::cout << "glfw not initiated check for errors" << std::endl;
+    }
 }
 
 void InnitGlew()

@@ -6,7 +6,7 @@ namespace glu
     {
         mMonitor = NULL;
         mShare = NULL;
-        mWindow =glfwCreateWindow(width, height, title, mMonitor, mShare);
+        mWindow = glfwCreateWindow(width, height, title, mMonitor, mShare);
         if(mWindow == NULL)
         {
             std::cout << "Failed to create GLFW window" << std::endl;
@@ -19,6 +19,11 @@ namespace glu
     }
     void Window::Bind()
     {
-        glfwMakeContextCurrent(mWindow);
+        if(mWindow!=NULL){
+            glfwMakeContextCurrent(mWindow);
+        }
+        else
+            std::cout << "invalid glfw window" << std::endl;
     }
+    
 }

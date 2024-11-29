@@ -2,10 +2,9 @@
 
 int main()
 {
-    auto* engine = new Engine;
-    engine->Init();
-    engine->Run();
-    engine->End();
-    delete engine;
+    Engine engine;
+    engine.Init();
+    engine.Run();
+    engine.End();
 
 }

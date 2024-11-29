@@ -26,7 +26,3 @@ class TimeManager
     friend class TimeClass;
     
 };
-TimeManager TimeManager::uniqueInstance;
-float TimeManager::deltaTime(0);
-float TimeManager::lastFrame(0);
-float TimeManager::currentFrame(0);
